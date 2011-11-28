@@ -10,7 +10,9 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  *
@@ -53,6 +55,9 @@ public class HideNSeek extends JavaPlugin {
                     }
                 }
             }
+            else if(args.length > 0 && args[0].equalsIgnoreCase("who")) {
+                sender.sendMessage(this.getPlayers());
+            }
             else {
                 if(this.players.contains((Player) sender))
                     sender.sendMessage("You are currently participating in Hide n Seek!");
@@ -83,5 +88,24 @@ public class HideNSeek extends JavaPlugin {
             Player player = (Player) it.next();
             player.sendMessage(color + message);
         }
+    }
+    
+    public String getPlayers() {
+        Iterator it = this.players.iterator();
+        String string = "";
+        String role = "";
+        while(it.hasNext()) {
+            Player player = (Player) it.next();
+            ItemStack helm = player.getInventory().getHelmet();
+            if(helm.getType() == Material.DIAMOND_HELMET)
+                role = "(Seeker)";
+            else
+                role = "(Hider)";
+            if(string.equalsIgnoreCase(""))
+                string = ChatColor.RED + role + ChatColor.WHITE + " " + player.getDisplayName();
+            else
+                string = string + ", " + ChatColor.RED + role + ChatColor.WHITE + " " + player.getDisplayName();
+        }
+        return string;
     }
 }
