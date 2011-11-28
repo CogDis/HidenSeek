@@ -22,6 +22,7 @@ public class HideNSeek extends JavaPlugin {
     public boolean state = false;
     
     private final HideNSeekEntityListener entityListener = new HideNSeekEntityListener(this);
+    private final HideNSeekPlayerListener playerListener = new HideNSeekPlayerListener(this);
     
     private HashSet<Player> players;
     
@@ -29,6 +30,7 @@ public class HideNSeek extends JavaPlugin {
         PluginManager pm = getServer().getPluginManager();
         PluginDescriptionFile pdf = this.getDescription();
         pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Monitor, this);
+        pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Monitor, this);
         System.out.println(pdf.getName() + " is now enabled.");
         players = new HashSet<Player>();
     }
@@ -99,6 +101,8 @@ public class HideNSeek extends JavaPlugin {
             ItemStack helm = player.getInventory().getHelmet();
             if(helm.getType() == Material.DIAMOND_HELMET)
                 role = "(Seeker)";
+            else if(helm.getType() == Material.GOLD_HELMET)
+                role = "(Observer)";
             else
                 role = "(Hider)";
             if(string.equalsIgnoreCase(""))
@@ -107,5 +111,10 @@ public class HideNSeek extends JavaPlugin {
                 string = string + ", " + ChatColor.RED + role + ChatColor.WHITE + " " + player.getDisplayName();
         }
         return string;
+    }
+    
+    public void removePlayer(Player player) {
+        if(this.players.contains(player))
+            this.players.remove(player);
     }
 }
