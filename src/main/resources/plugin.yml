@@ -5,3 +5,7 @@ commands:
     hns:
         description: Shows status of Hide n Seek
         usage: /hns [toggle]
+permissions:
+    precipice.hidenseek.toggle:
+        description: Whether or not you can enable/disable Hide n Seek games.
+        default: op

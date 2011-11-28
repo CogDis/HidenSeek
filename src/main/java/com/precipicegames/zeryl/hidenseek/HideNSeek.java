@@ -8,8 +8,6 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 
 /**
  *
@@ -35,7 +33,7 @@ public class HideNSeek extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if(cmd.getName().equalsIgnoreCase("hns")) {
-            if(args.length > 0 && args[0].equalsIgnoreCase("toggle")) {
+            if(args.length > 0 && args[0].equalsIgnoreCase("toggle") && sender.hasPermission("precipice.hidenseek.toggle")) {
                 state = !state;
                 sender.sendMessage("Hide n Seek is now " + ChatColor.YELLOW + ((state == true) ? "On" : "Off"));
             } else {
