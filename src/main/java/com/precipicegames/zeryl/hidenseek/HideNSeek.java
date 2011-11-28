@@ -64,9 +64,9 @@ public class HideNSeek extends JavaPlugin {
                     sender.sendMessage(this.getPlayers());
                 }
                 else if(args[0].equalsIgnoreCase("help")) {
-                    sender.sendMessage(ChatColor.YELLOW + "/hhs" + ChatColor.WHITE + ": Shows your current Hide n Seek status.");
-                    sender.sendMessage(ChatColor.YELLOW + "/hhs toggle" + ChatColor.WHITE + ": Toggles whether or not you're playing Hide n Seek.");
-                    sender.sendMessage(ChatColor.YELLOW + "/hhs who" + ChatColor.WHITE + ": Shows who is playing Hide n Seek, and their status.");
+                    sender.sendMessage(ChatColor.YELLOW + "/hns" + ChatColor.WHITE + ": Shows your current Hide n Seek status.");
+                    sender.sendMessage(ChatColor.YELLOW + "/hns toggle" + ChatColor.WHITE + ": Toggles whether or not you're playing Hide n Seek.");
+                    sender.sendMessage(ChatColor.YELLOW + "/hns who" + ChatColor.WHITE + ": Shows who is playing Hide n Seek, and their status.");
                 }
             }
             else {
