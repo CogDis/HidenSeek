@@ -66,6 +66,13 @@ public class HideNSeekEntityListener extends EntityListener {
                         return;
                     }
                     
+                    // When a hider shoots a seeker!
+                    if(shothelm.getTypeId() == Material.DIAMOND_HELMET.getId() && shooterhelm.getTypeId() != Material.DIAMOND_HELMET.getId() 
+                            && shooterhelm.getTypeId() != Material.GOLD_HELMET.getId() && plugin.isPlaying(shooter) && plugin.isPlaying(shot)) {
+                        plugin.sendToPlayers(shooter.getDisplayName() + " is taunting " + shot.getDisplayName(), ChatColor.RED);
+                        return;
+                    }
+                    
                     // When you've landed a good shot.
                     if(shooterhelm.getTypeId() == Material.DIAMOND_HELMET.getId()) {
                         shot.sendMessage(ChatColor.RED + "You are now on the " + ChatColor.DARK_PURPLE + "seekers" + ChatColor.RED + ".");

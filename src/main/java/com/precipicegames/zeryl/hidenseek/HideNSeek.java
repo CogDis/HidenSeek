@@ -23,9 +23,7 @@ public class HideNSeek extends JavaPlugin {
     
     private final HideNSeekEntityListener entityListener = new HideNSeekEntityListener(this);
     private final HideNSeekPlayerListener playerListener = new HideNSeekPlayerListener(this);
-    
-    private boolean countdown = false;
-    
+   
     private HashSet<Player> players;
     
     public void onEnable() {
@@ -33,6 +31,7 @@ public class HideNSeek extends JavaPlugin {
         PluginDescriptionFile pdf = this.getDescription();
         pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Monitor, this);
         pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Monitor, this);
+        pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Lowest, this);
         System.out.println(pdf.getName() + " is now enabled.");
         players = new HashSet<Player>();
     }
