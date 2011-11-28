@@ -23,7 +23,7 @@ public class HideNSeekEntityListener extends EntityListener {
 
     @Override
     public void onEntityDamage(EntityDamageEvent event) {
-        if(plugin.state != true) {
+        if(!plugin.isRunning()) {
             return;
         }
         if (event instanceof EntityDamageByEntityEvent) {
@@ -36,6 +36,15 @@ public class HideNSeekEntityListener extends EntityListener {
                     
                     ItemStack shothelm = shot.getInventory().getHelmet();
                     ItemStack shooterhelm = shooter.getInventory().getHelmet();
+                    
+                    if(!plugin.isPlaying(shooter)) {
+                        return;
+                    }
+                    
+                    if(!plugin.isPlaying(shot)) {
+                        shooter.sendMessage(ChatColor.RED + "You've shot someone who isn't playing.");
+                        return;
+                    }
                     
                     // When you've been shot by your own team.
                     if(shothelm.getTypeId() == shooterhelm.getTypeId()) {
@@ -63,7 +72,7 @@ public class HideNSeekEntityListener extends EntityListener {
                         shooter.sendMessage(ChatColor.RED + "You've sent " + shot.getName() + " to the seekers!");
                         ItemStack item = new ItemStack(Material.DIAMOND_HELMET,1);
                         shot.getInventory().setHelmet(item);
-                        shot.updateInventory();
+                        //shot.updateInventory();
                         return;
                     }
                 }
