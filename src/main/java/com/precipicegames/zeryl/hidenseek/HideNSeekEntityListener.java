@@ -57,7 +57,7 @@ public class HideNSeekEntityListener extends EntityListener {
                         return;
                     }
                     
-                    // When you've landed a good shot. This is a test!
+                    // When you've landed a good shot.
                     if(shooterhelm.getTypeId() == Material.DIAMOND_HELMET.getId()) {
                         shot.sendMessage(ChatColor.RED + "You are now on the " + ChatColor.DARK_PURPLE + "seekers" + ChatColor.RED + ".");
                         shooter.sendMessage(ChatColor.RED + "You've sent " + shot.getName() + " to the seekers!");
