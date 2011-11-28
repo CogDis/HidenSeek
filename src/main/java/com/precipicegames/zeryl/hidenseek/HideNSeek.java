@@ -1,6 +1,7 @@
 package com.precipicegames.zeryl.hidenseek;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event.Priority;
@@ -42,10 +43,12 @@ public class HideNSeek extends JavaPlugin {
                     if(this.players.contains(sender)) {
                         this.players.remove((Player) sender);
                         sender.sendMessage("Hide n Seek is now " + ChatColor.YELLOW + "Off");
+                        this.sendToPlayers(sender.getName() + " is no longer playing Hide n Seek!", ChatColor.RED);
                     }
                     else {
                         this.players.add((Player) sender);
                         sender.sendMessage("Hide n Seek is now " + ChatColor.YELLOW + "On");
+                        this.sendToPlayers(sender.getName() + " is now playing Hide n Seek!", ChatColor.RED);
                     }
                 }
             }
@@ -68,5 +71,13 @@ public class HideNSeek extends JavaPlugin {
     
     public boolean isRunning() {
         return this.players.isEmpty();
+    }
+    
+    public void sendToPlayers(String message, ChatColor color) {
+        Iterator it = this.players.iterator();
+        while(it.hasNext()) {
+            Player player = (Player) it.next();
+            player.sendMessage(color + message);
+        }
     }
 }

@@ -70,6 +70,7 @@ public class HideNSeekEntityListener extends EntityListener {
                     if(shooterhelm.getTypeId() == Material.DIAMOND_HELMET.getId()) {
                         shot.sendMessage(ChatColor.RED + "You are now on the " + ChatColor.DARK_PURPLE + "seekers" + ChatColor.RED + ".");
                         shooter.sendMessage(ChatColor.RED + "You've sent " + shot.getName() + " to the seekers!");
+                        plugin.sendToPlayers(shooter.getDisplayName() + " has converted " + shot.getDisplayName() + " to the seekers!", ChatColor.RED);
                         ItemStack item = new ItemStack(Material.DIAMOND_HELMET,1);
                         shot.getInventory().setHelmet(item);
                         //shot.updateInventory();
