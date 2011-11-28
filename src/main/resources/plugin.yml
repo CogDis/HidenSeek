@@ -1,0 +1,7 @@
+name: HideNSeek
+main: com.precipicegames.zeryl.hidenseek.HideNSeek
+version: 1.0
+commands:
+    hns:
+        description: Shows status of Hide n Seek
+        usage: /hns [toggle]
