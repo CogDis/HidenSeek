@@ -24,6 +24,8 @@ public class HideNSeek extends JavaPlugin {
     private final HideNSeekEntityListener entityListener = new HideNSeekEntityListener(this);
     private final HideNSeekPlayerListener playerListener = new HideNSeekPlayerListener(this);
     
+    private boolean countdown = false;
+    
     private HashSet<Player> players;
     
     public void onEnable() {
@@ -43,22 +45,29 @@ public class HideNSeek extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if(cmd.getName().equalsIgnoreCase("hns")) {
-            if(args.length > 0 && args[0].equalsIgnoreCase("toggle") && sender.hasPermission("precipice.hidenseek.toggle")) {
-                if(sender instanceof Player) {
-                    if(this.players.contains((Player) sender)) {
-                        this.players.remove((Player) sender);
-                        sender.sendMessage("Hide n Seek is now " + ChatColor.YELLOW + "Off");
-                        this.sendToPlayers(sender.getName() + " is no longer playing Hide n Seek!", ChatColor.RED);
-                    }
-                    else {
-                        this.players.add((Player) sender);
-                        sender.sendMessage("Hide n Seek is now " + ChatColor.YELLOW + "On");
-                        this.sendToPlayers(sender.getName() + " is now playing Hide n Seek!", ChatColor.RED);
+            if(args.length > 0) {
+                if(args[0].equalsIgnoreCase("toggle") && sender.hasPermission("precipice.hidenseek.toggle")) {
+                    if(sender instanceof Player) {
+                        if(this.players.contains((Player) sender)) {
+                            this.players.remove((Player) sender);
+                            sender.sendMessage("Hide n Seek is now " + ChatColor.YELLOW + "Off");
+                            this.sendToPlayers(sender.getName() + " is no longer playing Hide n Seek!", ChatColor.RED);
+                        }
+                        else {
+                            this.players.add((Player) sender);
+                            sender.sendMessage("Hide n Seek is now " + ChatColor.YELLOW + "On");
+                            this.sendToPlayers(sender.getName() + " is now playing Hide n Seek!", ChatColor.RED);
+                        }
                     }
                 }
-            }
-            else if(args.length > 0 && args[0].equalsIgnoreCase("who")) {
-                sender.sendMessage(this.getPlayers());
+                else if(args[0].equalsIgnoreCase("who")) {
+                    sender.sendMessage(this.getPlayers());
+                }
+                else if(args[0].equalsIgnoreCase("help")) {
+                    sender.sendMessage(ChatColor.YELLOW + "/hhs" + ChatColor.WHITE + ": Shows your current Hide n Seek status.");
+                    sender.sendMessage(ChatColor.YELLOW + "/hhs toggle" + ChatColor.WHITE + ": Toggles whether or not you're playing Hide n Seek.");
+                    sender.sendMessage(ChatColor.YELLOW + "/hhs who" + ChatColor.WHITE + ": Shows who is playing Hide n Seek, and their status.");
+                }
             }
             else {
                 if(this.players.contains((Player) sender))
