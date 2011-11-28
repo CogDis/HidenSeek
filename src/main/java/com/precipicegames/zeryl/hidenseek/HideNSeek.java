@@ -31,7 +31,6 @@ public class HideNSeek extends JavaPlugin {
         PluginDescriptionFile pdf = this.getDescription();
         pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Monitor, this);
         pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Monitor, this);
-        pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Lowest, this);
         System.out.println(pdf.getName() + " is now enabled.");
         players = new HashSet<Player>();
     }
@@ -66,6 +65,9 @@ public class HideNSeek extends JavaPlugin {
                     sender.sendMessage(ChatColor.YELLOW + "/hns" + ChatColor.WHITE + ": Shows your current Hide n Seek status.");
                     sender.sendMessage(ChatColor.YELLOW + "/hns toggle" + ChatColor.WHITE + ": Toggles whether or not you're playing Hide n Seek.");
                     sender.sendMessage(ChatColor.YELLOW + "/hns who" + ChatColor.WHITE + ": Shows who is playing Hide n Seek, and their status.");
+                }
+                else if(args[0].equalsIgnoreCase("reload") && sender.isOp()) {
+                    //nothing for now.
                 }
             }
             else {
