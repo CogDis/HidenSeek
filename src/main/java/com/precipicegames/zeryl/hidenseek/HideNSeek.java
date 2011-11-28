@@ -28,6 +28,7 @@ public class HideNSeek extends JavaPlugin {
         PluginDescriptionFile pdf = this.getDescription();
         pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Monitor, this);
         System.out.println(pdf.getName() + " is now enabled.");
+        players = new HashSet<Player>();
     }
     
     public void onDisable() {
@@ -40,7 +41,7 @@ public class HideNSeek extends JavaPlugin {
         if(cmd.getName().equalsIgnoreCase("hns")) {
             if(args.length > 0 && args[0].equalsIgnoreCase("toggle") && sender.hasPermission("precipice.hidenseek.toggle")) {
                 if(sender instanceof Player) {
-                    if(this.players.contains(sender)) {
+                    if(this.players.contains((Player) sender)) {
                         this.players.remove((Player) sender);
                         sender.sendMessage("Hide n Seek is now " + ChatColor.YELLOW + "Off");
                         this.sendToPlayers(sender.getName() + " is no longer playing Hide n Seek!", ChatColor.RED);
@@ -53,7 +54,7 @@ public class HideNSeek extends JavaPlugin {
                 }
             }
             else {
-                if(this.players.contains(sender))
+                if(this.players.contains((Player) sender))
                     sender.sendMessage("You are currently participating in Hide n Seek!");
                 else
                     sender.sendMessage("You are currently " + ChatColor.RED + "not" + ChatColor.WHITE + " participating in Hide n Seek!");
@@ -70,7 +71,10 @@ public class HideNSeek extends JavaPlugin {
     }
     
     public boolean isRunning() {
-        return this.players.isEmpty();
+        if(this.players.size() > 0)
+            return true;
+        else
+            return false;
     }
     
     public void sendToPlayers(String message, ChatColor color) {
