@@ -52,6 +52,14 @@ public class HideNSeek extends JavaPlugin {
                             this.players.remove((Player) sender);
                             sender.sendMessage("Hide n Seek is now " + ChatColor.YELLOW + "Off");
                             this.sendToPlayers(sender.getName() + " is no longer playing Hide n Seek!", ChatColor.RED);
+                            if(this.ready.contains((Player) sender)) {
+                                this.ready.remove((Player) sender);
+                                
+                                if(this.ready.size() == this.players.size()) {
+                                    this.sendToPlayers("All players are ready, enjoy your game!", ChatColor.GREEN);
+                                    this.ready.clear();
+                                }
+                            }
                         }
                         else {
                             this.players.add((Player) sender);
