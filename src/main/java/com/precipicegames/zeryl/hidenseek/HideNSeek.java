@@ -25,6 +25,7 @@ public class HideNSeek extends JavaPlugin {
     private final HideNSeekPlayerListener playerListener = new HideNSeekPlayerListener(this);
    
     private HashSet<Player> players;
+    private HashSet<Player> ready;
     
     public void onEnable() {
         PluginManager pm = getServer().getPluginManager();
@@ -33,6 +34,7 @@ public class HideNSeek extends JavaPlugin {
         pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Monitor, this);
         System.out.println(pdf.getName() + " is now enabled.");
         players = new HashSet<Player>();
+        ready = new HashSet<Player>();
     }
     
     public void onDisable() {
@@ -65,6 +67,21 @@ public class HideNSeek extends JavaPlugin {
                     sender.sendMessage(ChatColor.YELLOW + "/hns" + ChatColor.WHITE + ": Shows your current Hide n Seek status.");
                     sender.sendMessage(ChatColor.YELLOW + "/hns toggle" + ChatColor.WHITE + ": Toggles whether or not you're playing Hide n Seek.");
                     sender.sendMessage(ChatColor.YELLOW + "/hns who" + ChatColor.WHITE + ": Shows who is playing Hide n Seek, and their status.");
+                }
+                else if(args[0].equalsIgnoreCase("ready")) {
+                    if(this.ready.contains((Player) sender)) {
+                        this.ready.remove((Player) sender);
+                        sender.sendMessage(ChatColor.RED + "You are now marked as not ready to play!");
+                        this.sendToPlayers(sender.getName() + " is no longer ready to play!", ChatColor.RED);
+                    } else {
+                        this.ready.add((Player) sender);
+                        this.sendToPlayers(sender.getName() + " is ready to play!", ChatColor.RED);
+                    }
+                    
+                    if(this.ready.size() == this.players.size()) {
+                        this.sendToPlayers("All players are ready, enjoy your game!", ChatColor.GREEN);
+                        this.ready.clear();
+                    }
                 }
                 else if(args[0].equalsIgnoreCase("reload") && sender.isOp()) {
                     //nothing for now.
@@ -106,7 +123,9 @@ public class HideNSeek extends JavaPlugin {
         Iterator it = this.players.iterator();
         String string = "";
         String role = "";
+
         while(it.hasNext()) {
+            String name = "";
             Player player = (Player) it.next();
             ItemStack helm = player.getInventory().getHelmet();
             if(helm.getType() == Material.DIAMOND_HELMET)
@@ -115,10 +134,15 @@ public class HideNSeek extends JavaPlugin {
                 role = "(Observer)";
             else
                 role = "(Hider)";
-            if(string.equalsIgnoreCase(""))
-                string = ChatColor.RED + role + ChatColor.WHITE + " " + player.getDisplayName();
+            if(this.ready.contains(player))
+                name = ChatColor.GREEN + player.getDisplayName();
             else
-                string = string + ", " + ChatColor.RED + role + ChatColor.WHITE + " " + player.getDisplayName();
+                name = player.getDisplayName();
+            
+            if(string.equalsIgnoreCase(""))
+                string = ChatColor.RED + role + ChatColor.WHITE + " " + name;
+            else
+                string = string + ", " + ChatColor.RED + role + ChatColor.WHITE + " " + name;
         }
         
         if(this.players.isEmpty()) {
