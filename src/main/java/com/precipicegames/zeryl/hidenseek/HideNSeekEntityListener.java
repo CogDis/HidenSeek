@@ -47,9 +47,14 @@ public class HideNSeekEntityListener extends EntityListener {
                     }
                     
                     // When you've been shot by your own team.
-                    if(shothelm.getTypeId() == shooterhelm.getTypeId()) {
+                    if((shothelm.getTypeId() == shooterhelm.getTypeId() && (shot.getEntityId() != shooter.getEntityId()))) {
                         shot.sendMessage(ChatColor.RED + "You've been shot by your own teammate!");
                         shooter.sendMessage(ChatColor.RED + "You shot your own teammate!");
+                        return;
+                    }
+                    
+                    if(shooter.getEntityId() == shot.getEntityId()) {
+                        shot.sendMessage(ChatColor.RED + "You've shot yourself!");
                         return;
                     }
                     

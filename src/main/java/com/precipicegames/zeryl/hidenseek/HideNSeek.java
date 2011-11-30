@@ -120,6 +120,10 @@ public class HideNSeek extends JavaPlugin {
             else
                 string = string + ", " + ChatColor.RED + role + ChatColor.WHITE + " " + player.getDisplayName();
         }
+        
+        if(this.players.isEmpty()) {
+            string = ChatColor.RED + "Noone is playing Hide n Seek!";
+        }
         return string;
     }
     
