@@ -1,14 +1,16 @@
 package com.precipicegames.zeryl.hidenseek;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
  *
  * @author Zeryl
  */
-public class HideNSeekPlayerListener extends PlayerListener {
+public class HideNSeekPlayerListener implements Listener {
     
     private final HideNSeek plugin;
     
@@ -16,7 +18,7 @@ public class HideNSeekPlayerListener extends PlayerListener {
         plugin = instance;
     }
     
-    @Override
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         

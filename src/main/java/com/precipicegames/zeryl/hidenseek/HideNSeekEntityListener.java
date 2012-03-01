@@ -4,16 +4,18 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 
 /**
  *
  * @author Zeryl
  */
-public class HideNSeekEntityListener extends EntityListener {
+public class HideNSeekEntityListener implements Listener {
 
     private final HideNSeek plugin;
     
@@ -21,7 +23,7 @@ public class HideNSeekEntityListener extends EntityListener {
         plugin = instance;
     }
 
-    @Override
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDamage(EntityDamageEvent event) {
         if(!plugin.isRunning()) {
             return;
@@ -42,13 +44,13 @@ public class HideNSeekEntityListener extends EntityListener {
                     }
                     
                     if(!plugin.isPlaying(shot)) {
-                        shooter.sendMessage(ChatColor.RED + "You've shot someone who isn't playing.");
+                        shooter.sendMessage(plugin.config.getString("not_playing"));
                         return;
                     }
                     
                     // When you've been shot by your own team.
                     if((shothelm.getTypeId() == shooterhelm.getTypeId() && (shot.getEntityId() != shooter.getEntityId()))) {
-                        shot.sendMessage(ChatColor.RED + "You've been shot by your own teammate!");
+                        shot.sendMessage(plugin.config.getString("shot_by_own_team"));
                         shooter.sendMessage(ChatColor.RED + "You shot your own teammate!");
                         return;
                     }

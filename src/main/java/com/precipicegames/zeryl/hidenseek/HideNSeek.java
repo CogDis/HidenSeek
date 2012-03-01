@@ -1,10 +1,15 @@
 package com.precipicegames.zeryl.hidenseek;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event.Priority;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,6 +18,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.configuration.file.FileConfiguration;
 
 /**
  *
@@ -23,15 +29,20 @@ public class HideNSeek extends JavaPlugin {
     
     private final HideNSeekEntityListener entityListener = new HideNSeekEntityListener(this);
     private final HideNSeekPlayerListener playerListener = new HideNSeekPlayerListener(this);
+    
+    public FileConfiguration config;
    
     private HashSet<Player> players;
     private HashSet<Player> ready;
     
     public void onEnable() {
         PluginManager pm = getServer().getPluginManager();
+        
+        buildConfig();
+
         PluginDescriptionFile pdf = this.getDescription();
-        pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Monitor, this);
-        pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Monitor, this);
+        pm.registerEvents(entityListener, this);
+        pm.registerEvents(playerListener, this);
         System.out.println(pdf.getName() + " is now enabled.");
         players = new HashSet<Player>();
         ready = new HashSet<Player>();
@@ -40,6 +51,34 @@ public class HideNSeek extends JavaPlugin {
     public void onDisable() {
         PluginDescriptionFile pdf = this.getDescription();
         System.out.println(pdf.getName() + " is now disabled.");
+    }
+    
+    private void buildConfig() {
+        File configFile = new File(this.getDataFolder() + "config.yml");
+        try {
+            configFile.createNewFile();
+        } catch (IOException ex) {
+            Logger.getLogger(HideNSeek.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            config.load(configFile);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(HideNSeek.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(HideNSeek.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidConfigurationException ex) {
+            Logger.getLogger(HideNSeek.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        config.addDefault("not_playing", ChatColor.RED + "You've shot someone who isn't playing.");
+        config.addDefault("shot_by_own_team", ChatColor.RED + "You've been shot by your own teammate!");
+        config.addDefault("shot_by_own_team_shooter", ChatColor.RED + "You shot your own teammate!");
+        
+        try {
+            config.save(configFile);
+        } catch (IOException ex) {
+            Logger.getLogger(HideNSeek.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Override
@@ -93,7 +132,8 @@ public class HideNSeek extends JavaPlugin {
                     }
                 }
                 else if(args[0].equalsIgnoreCase("reload") && sender.isOp()) {
-                    //nothing for now.
+                    this.buildConfig();
+                    sender.sendMessage("[Hide N Seek]: Config file should be reloaded.");
                 }
             }
             else {
@@ -125,6 +165,14 @@ public class HideNSeek extends JavaPlugin {
         while(it.hasNext()) {
             Player player = (Player) it.next();
             player.sendMessage(color + message);
+        }
+    }
+    
+    public void sendToPlayers(String message) {
+        Iterator it = this.players.iterator();
+        while(it.hasNext()) {
+            Player player = (Player) it.next();
+            player.sendMessage(message);
         }
     }
     
