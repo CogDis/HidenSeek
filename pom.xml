@@ -4,7 +4,7 @@
   <name>HidenSeek</name>
   <groupId>com.precipicegames.zeryl</groupId>
   <artifactId>HidenSeek</artifactId>
-  <version>1.0</version>
+  <version>1.0.1</version>
   <packaging>jar</packaging>
   <url>http://maven.apache.org</url>
 
