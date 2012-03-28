@@ -48,13 +48,14 @@ public class HideNSeek extends JavaPlugin {
         ready = new HashSet<Player>();
     }
     
+    @Override
     public void onDisable() {
         PluginDescriptionFile pdf = this.getDescription();
         System.out.println(pdf.getName() + " is now disabled.");
     }
     
     private void buildConfig() {
-        File configFile = new File(this.getDataFolder() + "config.yml");
+        File configFile = new File(this.getDataFolder(), "config.yml");
         try {
             configFile.createNewFile();
         } catch (IOException ex) {
