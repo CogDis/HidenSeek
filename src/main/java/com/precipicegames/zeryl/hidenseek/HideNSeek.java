@@ -30,16 +30,24 @@ public class HideNSeek extends JavaPlugin {
     private final HideNSeekEntityListener entityListener = new HideNSeekEntityListener(this);
     private final HideNSeekPlayerListener playerListener = new HideNSeekPlayerListener(this);
     
-    public FileConfiguration config;
-   
     private HashSet<Player> players;
     private HashSet<Player> ready;
     
+    public FileConfiguration config;
+    private File configFile = new File(this.getDataFolder(), "config.yml");
+    
+    @Override
     public void onEnable() {
         PluginManager pm = getServer().getPluginManager();
         
-        buildConfig();
-
+        config = getConfig();
+        
+        config.addDefault("not_playing", ChatColor.RED + "You've shot someone who isn't playing.");
+        config.addDefault("shot_by_own_team", ChatColor.RED + "You've been shot by your own teammate!");
+        config.addDefault("shot_by_own_team_shooter", ChatColor.RED + "You shot your own teammate!");
+        
+        saveConfig();
+        
         PluginDescriptionFile pdf = this.getDescription();
         pm.registerEvents(entityListener, this);
         pm.registerEvents(playerListener, this);
@@ -52,34 +60,6 @@ public class HideNSeek extends JavaPlugin {
     public void onDisable() {
         PluginDescriptionFile pdf = this.getDescription();
         System.out.println(pdf.getName() + " is now disabled.");
-    }
-    
-    private void buildConfig() {
-        File configFile = new File(this.getDataFolder(), "config.yml");
-        try {
-            configFile.createNewFile();
-        } catch (IOException ex) {
-            Logger.getLogger(HideNSeek.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            config.load(configFile);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(HideNSeek.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(HideNSeek.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidConfigurationException ex) {
-            Logger.getLogger(HideNSeek.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        config.addDefault("not_playing", ChatColor.RED + "You've shot someone who isn't playing.");
-        config.addDefault("shot_by_own_team", ChatColor.RED + "You've been shot by your own teammate!");
-        config.addDefault("shot_by_own_team_shooter", ChatColor.RED + "You shot your own teammate!");
-        
-        try {
-            config.save(configFile);
-        } catch (IOException ex) {
-            Logger.getLogger(HideNSeek.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     @Override
@@ -133,7 +113,6 @@ public class HideNSeek extends JavaPlugin {
                     }
                 }
                 else if(args[0].equalsIgnoreCase("reload") && sender.isOp()) {
-                    this.buildConfig();
                     sender.sendMessage("[Hide N Seek]: Config file should be reloaded.");
                 }
             }

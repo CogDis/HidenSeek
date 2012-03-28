@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   <name>HidenSeek</name>
   <groupId>com.precipicegames.zeryl</groupId>
-  <artifactId>HidenSeek</artifactId>
-  <version>1.0.1</version>
+  <artifactId>HideNSeek</artifactId>
+  <version>1.0.2</version>
   <packaging>jar</packaging>
   <url>http://maven.apache.org</url>
 
